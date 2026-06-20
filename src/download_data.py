@@ -1,18 +1,34 @@
 """
-Download Chronic Kidney Disease dataset from Kaggle.
-Requires Kaggle API credentials (~/.kaggle/kaggle.json).
+Download Chronic Kidney Disease dataset.
+Sources: UCI ML Repository (default) or Kaggle API.
 """
 
 import shutil
-import zipfile
+import urllib.request
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = BASE_DIR / "data"
 
-# Kaggle dataset: Chronic Kidney Disease Prediction
 KAGGLE_DATASET = "mansoordatascience/ckd-prediction"
+UCI_DATASET_URL = "https://archive.ics.uci.edu/static/public/336/data.csv"
 OUTPUT_FILENAME = "kidney_disease.csv"
+
+
+def download_from_uci() -> Path:
+    """Download the real CKD dataset from UCI ML Repository (400 patients)."""
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
+    target = DATA_DIR / OUTPUT_FILENAME
+
+    print(f"Downloading from UCI: {UCI_DATASET_URL}")
+    urllib.request.urlretrieve(UCI_DATASET_URL, target)
+
+    import pandas as pd
+
+    df = pd.read_csv(target)
+    df.columns = df.columns.str.strip().str.lower()
+    print(f"UCI dataset saved to {target} ({len(df)} rows, {len(df.columns)} columns)")
+    return target
 
 
 def download_from_kaggle() -> Path:
@@ -20,9 +36,7 @@ def download_from_kaggle() -> Path:
     try:
         from kaggle.api import KaggleApi
     except ImportError as err:
-        raise ImportError(
-            "Install kaggle: pip install kaggle"
-        ) from err
+        raise ImportError("Install kaggle: pip install kaggle") from err
 
     DATA_DIR.mkdir(parents=True, exist_ok=True)
     api = KaggleApi()
@@ -42,7 +56,7 @@ def download_from_kaggle() -> Path:
     for zf in DATA_DIR.glob("*.zip"):
         zf.unlink()
 
-    print(f"Dataset saved to {target}")
+    print(f"Kaggle dataset saved to {target}")
     return target
 
 
@@ -86,12 +100,21 @@ def create_sample_dataset() -> Path:
 if __name__ == "__main__":
     import sys
 
-    if len(sys.argv) > 1 and sys.argv[1] == "--sample":
+    source = sys.argv[1] if len(sys.argv) > 1 else "uci"
+
+    if source == "--sample":
         create_sample_dataset()
-    else:
+    elif source == "kaggle":
         try:
             download_from_kaggle()
         except Exception as exc:
             print(f"Kaggle download failed: {exc}")
+            print("Falling back to UCI dataset...")
+            download_from_uci()
+    else:
+        try:
+            download_from_uci()
+        except Exception as exc:
+            print(f"UCI download failed: {exc}")
             print("Creating sample dataset instead...")
             create_sample_dataset()

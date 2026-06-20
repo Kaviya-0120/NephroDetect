@@ -73,21 +73,23 @@ def clean_column_names(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def handle_missing_values(df: pd.DataFrame) -> pd.DataFrame:
-    """Replace '?' and empty strings, then impute missing numeric values."""
+    """Replace '?', NaN strings, and empty values; then impute numeric missing."""
     df = df.copy()
-    df.replace(["?", ""], np.nan, inplace=True)
+    df.replace(["?", "", "NaN", "nan", "NA"], np.nan, inplace=True)
 
     for col in FEATURE_COLUMNS:
         if col in df.columns:
             df[col] = pd.to_numeric(df[col], errors="coerce")
 
     if TARGET_COLUMN in df.columns:
-        df[TARGET_COLUMN] = df[TARGET_COLUMN].astype(str).str.strip().str.lower()
+        df[TARGET_COLUMN] = (
+            df[TARGET_COLUMN].astype(str).str.strip().str.lower().str.replace(r"\s+", "", regex=True)
+        )
 
     for col in FEATURE_COLUMNS:
         if col in df.columns:
             median_val = df[col].median()
-            df[col].fillna(median_val, inplace=True)
+            df[col] = df[col].fillna(median_val)
 
     return df
 

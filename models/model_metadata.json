@@ -1,7 +1,7 @@
 {
-  "version": "v1.1",
-  "train_accuracy": 0.975,
-  "test_accuracy": 0.95,
+  "version": "v1.2",
+  "train_accuracy": 1.0,
+  "test_accuracy": 1.0,
   "parameters": {
     "n_estimators": 100,
     "max_depth": 10,
@@ -19,5 +19,5 @@
     "sc",
     "hemo"
   ],
-  "trained_at": "2026-06-20 12:57:13"
+  "trained_at": "2026-06-20 13:01:20"
 }

@@ -93,25 +93,37 @@ pip install -r requirements.txt
 
 ### Step 4: Download Dataset
 
-**Option A — Kaggle (Recommended)**
-
-1. Create a Kaggle account at [kaggle.com](https://www.kaggle.com)
-2. Go to Account → Create New API Token → saves `kaggle.json`
-3. Place `kaggle.json` in:
-   - Windows: `C:\Users\<username>\.kaggle\kaggle.json`
-   - Linux/Mac: `~/.kaggle/kaggle.json`
-4. Run:
+**Option A — UCI (Recommended, no account needed)**
 
 ```bash
 python src/download_data.py
 ```
 
-**Option B — Manual Download**
+Downloads the real [UCI Chronic Kidney Disease dataset](https://archive.ics.uci.edu/dataset/336/chronic+kidney+disease) (400 patients).
+
+**Option B — One-command full pipeline**
+
+```bash
+python run_pipeline.py
+```
+
+Runs: download → preprocess → train → evaluate automatically.
+
+**Option C — Kaggle**
+
+1. Create a Kaggle account and API token at [kaggle.com/settings](https://www.kaggle.com/settings)
+2. Run:
+
+```bash
+python src/download_data.py kaggle
+```
+
+**Option D — Manual Download**
 
 1. Download from [Kaggle CKD Dataset](https://www.kaggle.com/datasets/mansoordatascience/ckd-prediction)
 2. Save CSV as `data/kidney_disease.csv`
 
-**Option C — Sample Data (Testing Only)**
+**Option E — Sample Data (Testing Only)**
 
 ```bash
 python src/download_data.py --sample
