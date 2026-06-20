@@ -145,6 +145,40 @@ Open browser: **http://127.0.0.1:5000**
 
 ---
 
+## API Endpoints (Backend)
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/health` | GET | Health check — confirms model is loaded |
+| `/api/predict` | POST | JSON prediction API |
+| `/predict` | GET/POST | Web form prediction |
+| `/logs` | GET | Prediction monitoring dashboard |
+| `/retrain` | POST | Retrain model with updated data |
+
+**Example API call:**
+
+```bash
+curl -X POST http://127.0.0.1:5000/api/predict \
+  -H "Content-Type: application/json" \
+  -d '{"age":48,"bp":80,"sg":1.02,"al":2,"su":0,"bgr":121,"sc":1.2,"hemo":15.4}'
+```
+
+---
+
+## Cloud Deployment (Render — Free)
+
+The repo includes `render.yaml` for one-click deployment:
+
+1. Go to [render.com](https://render.com) and sign up (free)
+2. Click **New → Blueprint**
+3. Connect your GitHub account and select [Kaviya-0120/NephroDetect](https://github.com/Kaviya-0120/NephroDetect)
+4. Render will auto-detect `render.yaml` and deploy
+5. Your live URL will be: `https://nephrodetect.onrender.com` (or similar)
+
+The build step automatically installs dependencies, generates sample data, and trains the model.
+
+---
+
 ## Features Used
 
 | Feature | Description |
