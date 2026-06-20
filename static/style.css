@@ -1,0 +1,303 @@
+/* NephroDetect - Healthcare Theme Styles */
+
+:root {
+    --primary: #0d6efd;
+    --primary-dark: #0a58ca;
+    --light-blue: #e8f4fd;
+    --medical-teal: #17a2b8;
+    --success-green: #198754;
+    --danger-red: #dc3545;
+    --warning-orange: #fd7e14;
+    --text-dark: #2c3e50;
+    --shadow: 0 10px 30px rgba(13, 110, 253, 0.12);
+    --shadow-hover: 0 15px 40px rgba(13, 110, 253, 0.2);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--text-dark);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.page-bg {
+    background: linear-gradient(135deg, #f0f7ff 0%, #e8f4fd 50%, #ffffff 100%);
+    min-height: 100vh;
+}
+
+/* Navbar */
+.navbar-dark {
+    background: linear-gradient(90deg, var(--primary-dark), var(--primary)) !important;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand i {
+    color: #ff6b9d;
+}
+
+.nav-link {
+    transition: opacity 0.2s ease;
+}
+
+.nav-link:hover {
+    opacity: 0.85;
+}
+
+/* Hero Section */
+.hero-section {
+    position: relative;
+    background: linear-gradient(135deg, #0a58ca 0%, #0d6efd 40%, #17a2b8 100%);
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+.hero-section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+        radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.06) 0%, transparent 40%);
+    pointer-events: none;
+}
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    opacity: 0.5;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    padding-top: 80px;
+}
+
+.tagline {
+    font-size: 1.15rem;
+    opacity: 0.95;
+}
+
+.description {
+    opacity: 0.85;
+    max-width: 600px;
+}
+
+.cta-btn {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    font-weight: 600;
+}
+
+.cta-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(12px);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.icon-circle {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    color: #fff;
+}
+
+/* Feature Cards */
+.feature-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid rgba(13, 110, 253, 0.08);
+}
+
+.feature-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-hover);
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    color: var(--primary);
+}
+
+/* Form Card */
+.form-card,
+.result-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(13, 110, 253, 0.1);
+}
+
+.form-label {
+    font-weight: 600;
+    color: var(--text-dark);
+    font-size: 0.9rem;
+}
+
+.form-control {
+    border-radius: 10px;
+    border: 1.5px solid #dee2e6;
+    padding: 0.65rem 1rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-control:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(13, 110, 253, 0.35);
+    background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+}
+
+.btn-outline-secondary {
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+/* Result Page */
+.result-ckd {
+    border-top: 5px solid var(--danger-red);
+}
+
+.result-normal {
+    border-top: 5px solid var(--success-green);
+}
+
+.result-icon {
+    font-size: 4rem;
+}
+
+.result-ckd .result-icon {
+    color: var(--danger-red);
+}
+
+.result-normal .result-icon {
+    color: var(--success-green);
+}
+
+.risk-badge {
+    font-size: 1rem;
+    padding: 0.5rem 1.2rem;
+    border-radius: 50px;
+}
+
+.risk-low {
+    background-color: #d1e7dd !important;
+    color: #0f5132 !important;
+}
+
+.risk-medium {
+    background-color: #fff3cd !important;
+    color: #664d03 !important;
+}
+
+.risk-high {
+    background-color: #f8d7da !important;
+    color: #842029 !important;
+}
+
+.suggestion-box {
+    background: var(--light-blue);
+    border: none;
+    border-radius: 12px;
+    color: var(--text-dark);
+}
+
+.summary-item {
+    background: #f8f9fa;
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    border-left: 3px solid var(--primary);
+}
+
+/* Logs Table */
+.logs-table thead {
+    background: var(--light-blue);
+}
+
+.logs-table thead th {
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: none;
+    color: var(--primary-dark);
+}
+
+.logs-table tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+.logs-table tbody tr:hover {
+    background-color: rgba(13, 110, 253, 0.04);
+}
+
+/* Footer */
+.footer {
+    background: linear-gradient(90deg, #2c3e50, #34495e);
+    margin-top: auto;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.8s ease forwards;
+}
+
+.animate-slide-up {
+    animation: slideUp 0.8s ease forwards;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero-section {
+        min-height: auto;
+        padding-bottom: 3rem;
+    }
+
+    .display-3 {
+        font-size: 2.2rem;
+    }
+
+    .result-icon {
+        font-size: 3rem;
+    }
+}

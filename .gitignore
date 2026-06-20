@@ -1,0 +1,26 @@
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Virtual environment
+venv/
+.env
+
+# Model artifacts (optional - uncomment to ignore)
+# models/*.pkl
+
+# Logs with prediction data (keep structure, ignore runtime logs)
+logs/prediction_logs.csv
+logs/experiment_log.txt
+!logs/.gitkeep
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Kaggle credentials
+.kaggle/
