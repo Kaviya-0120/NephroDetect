@@ -3,141 +3,166 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NephroDetect | Early CKD Prediction</title>
+    <title>NephroDetect | Early Kidney Disease Detection</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-        <div class="container">
-            <a class="navbar-brand fw-bold" href="{{ url_for('home') }}">
-                <i class="bi bi-heart-pulse-fill me-2"></i>NephroDetect
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link active" href="{{ url_for('home') }}">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('predict') }}">Predict</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('logs') }}">Logs</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <canvas id="particles"></canvas>
 
-    <section class="hero-section">
-        <div class="hero-overlay"></div>
-        <div class="container hero-content">
-            <div class="row align-items-center min-vh-100">
-                <div class="col-lg-7 text-white animate-fade-in">
-                    <span class="badge bg-light text-primary mb-3 px-3 py-2">MLOps Healthcare</span>
-                    <h1 class="display-3 fw-bold mb-3">NephroDetect</h1>
-                    <p class="lead mb-4 tagline">
-                        Early Prediction of Chronic Kidney Disease using Machine Learning and MLOps
-                    </p>
-                    <p class="mb-4 description">
-                        Chronic Kidney Disease (CKD) affects millions worldwide and often progresses
-                        silently until advanced stages. NephroDetect uses clinical parameters and a
-                        Random Forest model to support early risk assessment and informed medical decisions.
-                    </p>
-                    <div class="d-flex flex-wrap gap-3">
-                        <a href="{{ url_for('predict') }}" class="btn btn-light btn-lg px-4 cta-btn">
-                            <i class="bi bi-clipboard2-pulse me-2"></i>Start Prediction
-                        </a>
-                        <a href="{{ url_for('logs') }}" class="btn btn-outline-light btn-lg px-4">
-                            <i class="bi bi-graph-up me-2"></i>View Logs
-                        </a>
+    <div class="page-wrap">
+        <nav class="navbar navbar-expand-lg navbar-dark navbar-premium fixed-top">
+            <div class="container">
+                <a class="navbar-brand" href="{{ url_for('home') }}">
+                    <i class="bi bi-droplet-half me-2"></i>NephroDetect
+                </a>
+                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navMain">
+                    <ul class="navbar-nav ms-auto gap-1">
+                        <li class="nav-item"><a class="nav-link active" href="{{ url_for('home') }}">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('predict') }}">Screening</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#about-ckd">About CKD</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('logs') }}">Records</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Hero -->
+        <section class="hero-section">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6" data-aos="fade-right" data-aos-duration="900">
+                        <p class="hero-app-name">NephroDetect</p>
+                        <h1 class="hero-title">Early Kidney Disease Detection Can Save Lives</h1>
+                        <p class="hero-subtitle">
+                            AI-powered clinical screening system for early kidney risk detection
+                            and better kidney care.
+                        </p>
+                        <div class="d-flex flex-wrap gap-3">
+                            <a href="{{ url_for('predict') }}" class="btn btn-glow">
+                                <i class="bi bi-clipboard2-pulse me-2"></i>Start Screening
+                            </a>
+                            <a href="#about-ckd" class="btn btn-outline-glow">
+                                <i class="bi bi-book me-2"></i>Learn More
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 d-none d-lg-block" data-aos="fade-left" data-aos-duration="900">
+                        <div class="floating-icons">
+                            <div class="float-icon"><i class="bi bi-heart-pulse"></i></div>
+                            <div class="float-icon"><i class="bi bi-droplet"></i></div>
+                            <div class="float-icon"><i class="bi bi-shield-plus"></i></div>
+                            <div class="float-icon"><i class="bi bi-activity"></i></div>
+                            <div class="float-icon"><i class="bi bi-hospital"></i></div>
+                        </div>
                     </div>
                 </div>
-                <div class="col-lg-5 d-none d-lg-block">
-                    <div class="hero-card glass-card p-4 animate-slide-up">
-                        <div class="d-flex align-items-center mb-3">
-                            <div class="icon-circle me-3"><i class="bi bi-droplet-fill"></i></div>
-                            <div>
-                                <h5 class="mb-0 text-white">Nephrology AI</h5>
-                                <small class="text-white-50">Clinical Decision Support</small>
+            </div>
+        </section>
+
+        <!-- What is CKD -->
+        <section class="section-block" id="about-ckd">
+            <div class="container">
+                <div class="text-center mb-5" data-aos="fade-up">
+                    <h2 class="section-title">What is CKD?</h2>
+                    <p class="section-subtitle">
+                        Chronic Kidney Disease (CKD) is a condition where the kidneys gradually lose
+                        their ability to filter waste and excess fluids. It often develops silently and
+                        can lead to kidney failure if not treated early.
+                    </p>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-lg-8" data-aos="fade-up" data-aos-delay="100">
+                        <div class="glass-card text-center">
+                            <div class="info-card-icon mx-auto"><i class="bi bi-info-circle"></i></div>
+                            <p class="mb-0" style="color: var(--text-muted); line-height: 1.8;">
+                                Your kidneys play a vital role in removing toxins, balancing fluids, and
+                                regulating blood pressure. When kidney function declines, harmful substances
+                                build up in the body — often without obvious symptoms until significant
+                                damage has occurred. Early screening helps protect your long-term health.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Symptoms -->
+        <section class="section-block alt-bg" id="symptoms">
+            <div class="container">
+                <div class="text-center mb-5" data-aos="fade-up">
+                    <h2 class="section-title">Symptoms</h2>
+                    <p class="section-subtitle">CKD may show subtle signs — pay attention to these warning signals</p>
+                </div>
+                <div class="row g-4">
+                    {% set symptoms = [
+                        ("bi-battery-half", "Fatigue", "Persistent tiredness and low energy levels"),
+                        ("bi-moisture", "Swelling in Legs", "Fluid retention causing ankle or leg swelling"),
+                        ("bi-speedometer2", "High Blood Pressure", "Hypertension that is difficult to control"),
+                        ("bi-droplet", "Frequent Urination", "Especially at night — changes in urination patterns"),
+                        ("bi-emoji-frown", "Loss of Appetite", "Reduced desire to eat and unexplained weight loss"),
+                        ("bi-wind", "Shortness of Breath", "Fluid buildup in lungs causing breathing difficulty")
+                    ] %}
+                    {% for icon, title, desc in symptoms %}
+                    <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="{{ loop.index * 80 }}">
+                        <div class="info-card">
+                            <div class="info-card-icon"><i class="bi {{ icon }}"></i></div>
+                            <h5>{{ title }}</h5>
+                            <p class="mb-0">{{ desc }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+
+        <!-- Prevention -->
+        <section class="section-block" id="prevention">
+            <div class="container">
+                <div class="text-center mb-5" data-aos="fade-up">
+                    <h2 class="section-title">Prevention</h2>
+                    <p class="section-subtitle">Protect your kidneys with these daily health practices</p>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-lg-8" data-aos="fade-up" data-aos-delay="100">
+                        <div class="glass-card">
+                            <ul class="prevention-list">
+                                <li><i class="bi bi-check-circle-fill"></i> Drink enough water daily</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Control blood sugar levels</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Control blood pressure</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Reduce salt intake</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Avoid smoking and alcohol</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Avoid overusing painkillers</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Regular health checkups</li>
+                            </ul>
+                            <div class="text-center mt-4">
+                                <a href="{{ url_for('predict') }}" class="btn btn-glow">
+                                    <i class="bi bi-clipboard2-pulse me-2"></i>Start Your Screening
+                                </a>
                             </div>
                         </div>
-                        <ul class="list-unstyled text-white-50 mb-0">
-                            <li class="mb-2"><i class="bi bi-check-circle-fill text-info me-2"></i>Random Forest Classifier</li>
-                            <li class="mb-2"><i class="bi bi-check-circle-fill text-info me-2"></i>Experiment Logging</li>
-                            <li class="mb-2"><i class="bi bi-check-circle-fill text-info me-2"></i>Prediction Monitoring</li>
-                            <li><i class="bi bi-check-circle-fill text-info me-2"></i>Model Retraining Pipeline</li>
-                        </ul>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section class="py-5 bg-white">
-        <div class="container py-4">
-            <div class="text-center mb-5">
-                <h2 class="fw-bold text-primary">About Chronic Kidney Disease</h2>
-                <p class="text-muted mx-auto" style="max-width: 720px;">
-                    CKD is a gradual loss of kidney function over time. Early detection through
-                    blood pressure, creatinine, hemoglobin, and related markers can significantly
-                    improve patient outcomes and reduce healthcare costs.
-                </p>
+        <footer class="footer-premium">
+            <div class="container">
+                <p>&copy; 2026 NephroDetect &mdash; Kidney Health Screening Platform</p>
+                <p class="mt-1" style="font-size: 0.78rem;">For educational screening purposes only. Not a substitute for professional medical advice.</p>
             </div>
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="feature-card h-100 text-center p-4">
-                        <i class="bi bi-search-heart feature-icon"></i>
-                        <h5 class="mt-3">Early Diagnosis</h5>
-                        <p class="text-muted mb-0">Identify CKD risk before symptoms become severe.</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="feature-card h-100 text-center p-4">
-                        <i class="bi bi-shield-check feature-icon"></i>
-                        <h5 class="mt-3">Risk Assessment</h5>
-                        <p class="text-muted mb-0">Classify patients into Low, Medium, or High risk levels.</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="feature-card h-100 text-center p-4">
-                        <i class="bi bi-cpu feature-icon"></i>
-                        <h5 class="mt-3">MLOps Pipeline</h5>
-                        <p class="text-muted mb-0">End-to-end workflow from data to deployment and monitoring.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <div class="container mt-3">
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-                        {{ message }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    </div>
-                {% endfor %}
-            </div>
-        {% endif %}
-    {% endwith %}
-
-    <section class="py-4 bg-light border-top">
-        <div class="container text-center">
-            <p class="text-muted mb-3">Add new patient data and retrain the model</p>
-            <form action="{{ url_for('retrain') }}" method="POST" class="d-inline">
-                <button type="submit" class="btn btn-outline-primary" onclick="return confirm('Retrain model with current dataset?')">
-                    <i class="bi bi-arrow-repeat me-2"></i>Retrain Model
-                </button>
-            </form>
-        </div>
-    </section>
-
-    <footer class="footer py-4">
-        <div class="container text-center">
-            <p class="mb-0 text-white-50">&copy; 2026 NephroDetect | MLOps Healthcare Project</p>
-        </div>
-    </footer>
+        </footer>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+    <script>AOS.init({ duration: 800, once: true, offset: 80 });</script>
 </body>
 </html>
