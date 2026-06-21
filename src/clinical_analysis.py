@@ -69,7 +69,6 @@ def build_clinical_analysis(inputs: dict, is_ckd: bool) -> dict:
     """Build structured clinical analysis for the result page."""
     checks = [
         ("Blood Pressure", f"{inputs['bp']} mmHg", *_check_bp(inputs["bp"])),
-        ("Specific Gravity", str(inputs["sg"]), *_check_sg(inputs["sg"])),
         ("Albumin", f"Level {int(inputs['al'])}", *_check_al(inputs["al"])),
         ("Urine Sugar", f"Level {int(inputs['su'])}", *_check_urine_sugar(int(inputs["su"]))),
         ("Blood Sugar", f"{inputs['sugar']} mg/dL", *_check_blood_sugar(inputs["sugar"])),

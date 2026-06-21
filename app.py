@@ -25,11 +25,11 @@ app.secret_key = "nephrodetect-clinical-secret-key"
 MODEL_PATH = BASE_DIR / "models" / "ckd_model.pkl"
 LOGS_DIR = BASE_DIR / "logs"
 PREDICTION_LOG = LOGS_DIR / "prediction_logs.csv"
+DEFAULT_SG = 1.020
 
 FEATURE_LABELS = {
     "age": "Age (Years)",
     "bp": "Blood Pressure (mmHg)",
-    "sg": "Specific Gravity",
     "al": "Albumin",
     "su": "Urine Sugar Level",
     "sugar": "Blood Sugar Level",
@@ -41,7 +41,6 @@ FEATURE_LABELS = {
 FIELD_TOOLTIPS = {
     "age": "Patient age in years. Kidney disease risk increases with age.",
     "bp": "Systolic blood pressure. High BP is a leading cause of kidney damage.",
-    "sg": "Urine specific gravity measures urine concentration.",
     "al": "Albumin in urine (0 = Normal). Higher levels suggest kidney filter damage.",
     "su": "Urine sugar indicates glucose leakage into urine and helps detect kidney dysfunction.",
     "sugar": "Blood sugar helps understand diabetes-related kidney risks.",
@@ -94,11 +93,10 @@ def get_risk_level(prediction, probability, inputs):
 
 
 def parse_form_inputs(form) -> dict | None:
-    """Parse form — su (urine sugar) and sugar (blood sugar) are separate fields."""
+    """Parse form — sg is set automatically; su and sugar are separate fields."""
     try:
         age = float(form["age"])
         bp = float(form["bp"])
-        sg = float(form["sg"])
         al = float(form["al"])
         urine_sugar = int(float(form["su"]))
         blood_sugar = float(form["sugar"])
@@ -109,29 +107,54 @@ def parse_form_inputs(form) -> dict | None:
         return None
 
     ranges = {
-        "age": (1, 120), "bp": (50, 200), "sg": (1.0, 1.05),
+        "age": (1, 120), "bp": (50, 200),
         "al": (0, 5), "su": (0, 5), "sugar": (40, 600),
         "bgr": (50, 500), "sc": (0.1, 20), "hemo": (3, 20),
     }
     values = {
-        "age": age, "bp": bp, "sg": sg, "al": al, "su": urine_sugar,
+        "age": age, "bp": bp, "al": al, "su": urine_sugar,
         "sugar": blood_sugar, "bgr": bgr, "sc": sc, "hemo": hemo,
     }
     for field, (low, high) in ranges.items():
-        val = values[field]
-        if not (low <= val <= high):
+        if not (low <= values[field] <= high):
             return None
 
+    values["sg"] = DEFAULT_SG
     return values
 
 
-def read_prediction_logs(limit=50):
+def read_all_logs() -> list[dict]:
     ensure_prediction_log()
-    logs = []
     with open(PREDICTION_LOG, "r", encoding="utf-8") as f:
-        for row in csv.DictReader(f):
-            logs.append(row)
-    return list(reversed(logs[-limit:]))
+        return list(csv.DictReader(f))
+
+
+def write_all_logs(rows: list[dict]) -> None:
+    ensure_prediction_log()
+    with open(PREDICTION_LOG, "w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=LOG_HEADERS, extrasaction="ignore")
+        writer.writeheader()
+        writer.writerows(rows)
+
+
+def read_prediction_logs(limit=50):
+    all_logs = read_all_logs()
+    return list(reversed(all_logs[-limit:]))
+
+
+def delete_log_by_index(display_index: int) -> bool:
+    """Delete a log row by its index in the newest-first display list."""
+    all_logs = read_all_logs()
+    if not all_logs:
+        return False
+
+    displayed = list(reversed(all_logs))
+    if display_index < 0 or display_index >= len(displayed):
+        return False
+
+    displayed.pop(display_index)
+    write_all_logs(list(reversed(displayed)))
+    return True
 
 
 @app.route("/")
@@ -199,6 +222,15 @@ def predict():
 @app.route("/logs")
 def logs():
     return render_template("logs.html", logs=read_prediction_logs())
+
+
+@app.route("/delete-log/<int:index>", methods=["POST"])
+def delete_log(index):
+    if delete_log_by_index(index):
+        flash("Record deleted successfully.", "success")
+    else:
+        flash("Unable to delete record. Please try again.", "danger")
+    return redirect(url_for("logs"))
 
 
 if __name__ == "__main__":

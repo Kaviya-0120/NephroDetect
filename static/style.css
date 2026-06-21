@@ -661,6 +661,41 @@ body {
     padding: 1rem 1.25rem;
 }
 
+.alert-success-premium {
+    background: rgba(0, 230, 118, 0.1);
+    border-color: rgba(0, 230, 118, 0.25);
+    color: #69f0ae;
+}
+
+/* ── Delete button ── */
+.btn-delete {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: rgba(255, 82, 82, 0.12);
+    color: #ff5252;
+    border: 1px solid rgba(255, 82, 82, 0.35);
+    border-radius: 10px;
+    padding: 0.45rem 0.85rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    white-space: nowrap;
+}
+
+.btn-delete:hover {
+    background: rgba(255, 82, 82, 0.25);
+    border-color: #ff5252;
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(255, 82, 82, 0.3);
+}
+
+.btn-delete:active {
+    transform: translateY(0);
+}
+
 /* ── Result page enhancements ── */
 .result-page {
     padding-top: 120px;

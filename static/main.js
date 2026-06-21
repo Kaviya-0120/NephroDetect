@@ -122,7 +122,7 @@ function initCustomInputs() {
                 }
             });
 
-            const required = ["age", "bp", "sg", "al", "su", "sugar", "bgr", "sc", "hemo"];
+            const required = ["age", "bp", "al", "su", "sugar", "bgr", "sc", "hemo"];
             for (const id of required) {
                 const el = document.getElementById(id);
                 if (!el || !el.value) {
