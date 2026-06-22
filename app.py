@@ -139,21 +139,23 @@ def write_all_logs(rows: list[dict]) -> None:
 
 def read_prediction_logs(limit=50):
     all_logs = read_all_logs()
+    # Add absolute original index to each log entry
+    for idx, log in enumerate(all_logs):
+        log["original_index"] = idx
     return list(reversed(all_logs[-limit:]))
 
 
-def delete_log_by_index(display_index: int) -> bool:
-    """Delete a log row by its index in the newest-first display list."""
+def delete_log_by_original_index(original_index: int) -> bool:
+    """Delete a log row by its absolute index in the CSV file."""
     all_logs = read_all_logs()
     if not all_logs:
         return False
 
-    displayed = list(reversed(all_logs))
-    if display_index < 0 or display_index >= len(displayed):
+    if original_index < 0 or original_index >= len(all_logs):
         return False
 
-    displayed.pop(display_index)
-    write_all_logs(list(reversed(displayed)))
+    all_logs.pop(original_index)
+    write_all_logs(all_logs)
     return True
 
 
@@ -226,7 +228,7 @@ def logs():
 
 @app.route("/delete-log/<int:index>", methods=["POST"])
 def delete_log(index):
-    if delete_log_by_index(index):
+    if delete_log_by_original_index(index):
         flash("Record deleted successfully.", "success")
     else:
         flash("Unable to delete record. Please try again.", "danger")

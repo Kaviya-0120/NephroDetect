@@ -3,7 +3,7 @@ services:
     name: nephrodetect
     runtime: python
     plan: free
-    buildCommand: pip install -r requirements.txt && python src/download_data.py && python src/train.py
+    buildCommand: pip install -r requirements.txt
     startCommand: gunicorn app:app --bind 0.0.0.0:$PORT
     envVars:
       - key: PYTHON_VERSION
